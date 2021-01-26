@@ -930,8 +930,6 @@ broker::expected<broker::data> val_to_data(const Val* v)
 		for ( const auto& te : *table )
 			{
 			auto hk = te.GetHashKey();
-			auto* entry = te.GetValue<TableEntryVal*>();
-
 			auto vl = table_val->RecreateIndex(*hk);
 
 			broker::vector composite_key;
@@ -958,7 +956,7 @@ broker::expected<broker::data> val_to_data(const Val* v)
 				caf::get<broker::set>(rval).emplace(move(key));
 			else
 				{
-				auto val = val_to_data(entry->GetVal().get());
+				auto val = val_to_data(te.value->GetVal().get());
 
 				if ( ! val )
 					return broker::ec::invalid_data;
